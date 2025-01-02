@@ -4,3 +4,11 @@
   margin: 0;
   text-align: center;
 }
+
+@media screen and (max-width: 1000px) {
+  .main-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* 이미지 비율 유지하며 컨테이너 채우기 */
+  }
+}
