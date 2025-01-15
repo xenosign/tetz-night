@@ -86,6 +86,49 @@ body {
   font-weight: 700;
 }
 
+.post-form {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+#post-content {
+  width: 700px;
+  padding: 10px;
+  font-weight: 700;
+  border: none;
+  border-radius: 20px;
+  background-color: #333;
+  color: white;
+  font-size: 16px;
+}
+
+#post-btn {
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: 700;
+  border: none;
+  border-radius: 20px;
+  background: linear-gradient(45deg, #1e90ff, #00bfff);
+  color: white;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+#like-btn {
+  padding: 8px 15px;
+  font-size: 16px;
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+  background: linear-gradient(45deg, #ff69b4, #ff1493);
+  color: white;
+  box-shadow: 0 2px 8px rgba(255, 255, 255, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+  margin-top: 10px;
+}
+
 @media screen and (max-width: 1000px) {
   .main-img {
     width: 100%;

@@ -41,7 +41,7 @@
         <h2>Invitation for Tetz's night!</h2>
         <br />
         <img class="main-img" src="./tetz_invitation.png" />
-        <h3 class="margin-top">(규찬님 사진 제공 감사합니다!! 🤩)</h3>
+        <h3 class="margin-top">(규찬님 사진 제공 감사합니다!! ㅋㅋㅋㅋㅋ)</h3>
 
         <br />
         <div class="info">
@@ -114,19 +114,26 @@
       </div>
       <hr />
       <div class="board">
-        <h1>⌨️이효석에 밤에 대해 하고 싶은 말을 남겨주세요!</h1>
+        <h1>📝이효석에 밤에 대해 하고 싶은 말을 남겨주세요!</h1>
         <h2>Please leave a message to Tetz's night!</h2>
+        <br />
         <h3 class="margin-top">
-          이효석의 밤에서 하고 싶은 레크레이션이나 아이디어도 좋습니다!
+          편하게 작성 하시면 됩니다!<br />
+          이효석의 밤에서 하고 싶은 레크레이션이나 아이디어도 좋습니다!<br />
+          가장 많이 좋아요를 받은 아이디어는 당일 진행 예정입니다 🫡
         </h3>
+        <br />
         <div class="post-form">
           <input
             type="text"
             id="post-content"
-            placeholder="한줄 메시지를 입력하세요"
+            placeholder="한줄 메시지를 입력하세요. 최대 40자 까지 입력 됩니다!"
+            maxlength="40"
+            oninput="this.value=this.value.slice(0,40)"
           />
           <button id="post-btn" class="btn">작성</button>
         </div>
+        <br />
         <div id="posts-container"></div>
       </div>
     </div>
@@ -139,6 +146,7 @@
       const postBtn = document.getElementById('post-btn');
       const postContent = document.getElementById('post-content');
       const postsContainer = document.getElementById('posts-container');
+      let userId;
 
       // UUID 생성 함수
       const generateUUID = () => {
@@ -162,7 +170,7 @@
 
       // UUID 체크 및 생성
       const checkAndGenerateUUID = () => {
-        let userId = localStorage.getItem('tetzNightUserId');
+        userId = localStorage.getItem('tetzNightUserId');
         if (!userId) {
           userId = generateUUID();
           localStorage.setItem('tetzNightUserId', userId);
@@ -205,8 +213,6 @@
 
       // 불참 버튼 클릭
       declineBtn.addEventListener('click', async () => {
-        const userId = localStorage.getItem('tetzNightUserId');
-
         try {
           const response = await fetch('http://localhost:8080/vote', {
             method: 'POST',
@@ -242,7 +248,6 @@
 
       // 게시글 작성
       postBtn.addEventListener('click', async () => {
-        const userId = localStorage.getItem('tetzNightUserId');
         const content = postContent.value;
 
         if (!content) {
@@ -257,13 +262,13 @@
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-              userId,
+              user: userId,
               content,
             }),
           });
 
-          if (response.status === 200) {
-            postContent.value = '';
+          if (response.status === 201) {
+            postContent.value = ''; // 작성 완료 후 input 비우기
             loadPosts();
           } else {
             alert('게시글 작성에 실패했습니다.');
@@ -274,24 +279,102 @@
         }
       });
 
+      // 엔터키로 게시글 작성
+      postContent.addEventListener('keypress', async (e) => {
+        if (e.key === 'Enter') {
+          const content = postContent.value;
+
+          if (!content) {
+            alert('내용을 입력해주세요!');
+            return;
+          }
+
+          try {
+            const response = await fetch('http://localhost:8080/post', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                user: userId,
+                content,
+              }),
+            });
+
+            if (response.status === 201) {
+              postContent.value = ''; // 작성 완료 후 input 비우기
+              loadPosts();
+            } else {
+              alert('게시글 작성에 실패했습니다.');
+            }
+          } catch (error) {
+            console.error('게시글 작성 중 오류 발생:', error);
+            alert('게시글 작성에 실패했습니다.');
+          }
+        }
+      });
+
       // 게시글 불러오기
       const loadPosts = async () => {
         try {
-          const response = await fetch('http://localhost:8080/posts');
+          const response = await fetch('http://localhost:8080/post', {
+            headers: {
+              uuid: userId,
+            },
+          });
           const posts = await response.json();
+
+          console.log(posts);
 
           postsContainer.innerHTML = posts
             .map(
               (post) => `
             <div class="post">
-              <span class="post-user">${post.userId}</span>
-              <span class="post-content">${post.content}</span>
+              <span class="post-user" style="font-size: 20px">✏️ ${post.user.replace(
+                'uuid-',
+                ''
+              )} | </span>
+              <span class="post-content" style="font-size: 20px">${
+                post.content
+              }</span>        
+              <button id="like-btn" class="btn" onclick="likePost('${
+                post.id
+              }')" 
+                style="background: ${
+                  post.liked
+                    ? 'linear-gradient(45deg, #ff1493, #ff69b4)'
+                    : 'linear-gradient(45deg, #808080, #a9a9a9)'
+                }; font-size: 20px">
+                👍 <span class="like-count">${post.likeCount || 0}</span>
+              </button>
             </div>
           `
             )
             .join('');
         } catch (error) {
           console.error('게시글 로딩 중 오류 발생:', error);
+        }
+      };
+
+      // 게시글 좋아요
+      const likePost = async (postId) => {
+        try {
+          const response = await fetch(`http://localhost:8080/${postId}/like`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              uuid: userId,
+            },
+          });
+
+          if (response.status === 200) {
+            loadPosts();
+          } else {
+            alert('좋아요 등록 or 수정에 실패했습니다.');
+          }
+        } catch (error) {
+          console.error('좋아요 중 오류 발생:', error);
+          alert('좋아요 등록 or 수정에 실패했습니다.');
         }
       };
 
