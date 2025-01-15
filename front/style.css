@@ -5,6 +5,87 @@
   text-align: center;
 }
 
+body {
+  background-color: #1a1a1a;
+  color: #ffffff;
+}
+
+.main {
+  margin-bottom: 100px;
+}
+
+.main > div {
+  padding: 40px 0px;
+}
+
+.margin-top {
+  margin-top: 10px;
+}
+
+.button-container {
+  display: flex;
+  gap: 60px;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 255, 255, 0.1);
+}
+
+#attend-btn {
+  padding: 15px 30px;
+  font-size: 18px;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  background: linear-gradient(45deg, #ffa500, #ff8c00);
+  color: white;
+  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+  font-weight: 700;
+}
+
+#decline-btn {
+  padding: 15px 30px;
+  font-size: 18px;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  background: linear-gradient(45deg, #ff0000, #ff4444);
+  color: white;
+  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+  font-weight: 700;
+}
+
+#modify-btn {
+  padding: 15px 30px;
+  font-size: 18px;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  background: linear-gradient(45deg, #1e90ff, #4169e1);
+  color: white;
+  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+  font-weight: 700;
+}
+
+#extension-btn {
+  padding: 15px 30px;
+  font-size: 18px;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  background: linear-gradient(45deg, #4caf50, #45a049);
+  color: white;
+  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+  font-weight: 700;
+}
+
 @media screen and (max-width: 1000px) {
   .main-img {
     width: 100%;

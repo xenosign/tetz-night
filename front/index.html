@@ -7,15 +7,266 @@
     <link rel="stylesheet" href="./style.css" />
   </head>
   <body>
-    <br />
-    <br />
-    <h1>이효석의 밤, 초대장</h1>
-    <h2>Invitation for Tetz's night!</h2>
-    <br />
-    <br />
-    <h1>이효석의 밤 오시겠습니까?</h1>
-    <h2>Would you like to join Tetz's night?</h2>
-    <br />
-    <img class="main-img" src="./tetz_invitation.png" />
+    <div class="main">
+      <div class="invitation">
+        <h1>✉️이효석의 밤, 초대장</h1>
+        <h2>Invitation for Tetz's night!</h2>
+        <br />
+        <div class="info">
+          <div>
+            <h2>🎈일시 : 2025년 2월 15일, 토요일 5시</h2>
+          </div>
+          <br />
+          <br />
+          <div>
+            <h2>🎈장소 : 서울 어딘가(미정)</h2>
+            <h3 class="margin-top">
+              투표에 따른 참여 인원에 따라 변동이 있을 예정입니다!
+            </h3>
+            <h3 class="margin-top">
+              인원이 확정되면 바로 장소 업데이트 후, 안내 드릴 예정입니다!
+            </h3>
+            <h3 class="margin-top">투표 해주세요~ 꼭이요!</h3>
+          </div>
+          <br />
+          <br />
+          <div>
+            <h2>🎈참여자 : Tetz 와 수업을 같이 했던 사람들</h2>
+            <h3 class="margin-top">
+              코딩온 KDT 1기, KDT 5기, KB It's your life 5기
+            </h3>
+          </div>
+          <br />
+          <br />
+          <div>
+            <h2>🎈무얼 하나요?</h2>
+            <h3 class="margin-top">참여자들 간의 네트워킹 및 레크레이션</h3>
+            <h3 class="margin-top">물건 바자회</h3>
+            <h3 class="margin-top">테츠에 대한 퀴즈 풀기 & 상품 수여</h3>
+          </div>
+        </div>
+      </div>
+      <hr />
+      <div class="vote">
+        <h1>😎이효석의 밤 오시겠습니까?</h1>
+        <h2>Would you like to join Tetz's night?</h2>
+        <br />
+        <img class="main-img" src="./tetz_invitation.png" />
+        <h3 class="margin-top">규찬님 사진 제공 감사합니다!! 🤩</h3>
+        <div class="button-container">
+          <button id="attend-btn" class="btn">참여</button>
+          <button id="decline-btn" class="btn">불참</button>
+          <button id="modify-btn" class="btn" style="display: none">
+            참여 여부 수정
+          </button>
+        </div>
+      </div>
+      <hr />
+      <div class="chat">
+        <h1>🤼이효석의 밤 참여자들과 소통하고 싶으신가요?</h1>
+        <h2>Would you like to talk with participants?</h2>
+        <br />
+        <h3>
+          채팅이 하고 싶으시면 아래 링크를 클릭해서 크롬 익스텐션을
+          설치하시면<br />
+          초대장을 받은 사람들끼리 채팅이 가능합니다. (같이 개발한 사람 :
+          호준님, 경은님)
+        </h3>
+        <br />
+        <a
+          href="https://chromewebstore.google.com/detail/web-chat/hialhgiplaekafjncddejnpdbgpjgknf?hl=ko"
+          target="_blank"
+        >
+          <button id="extension-btn" class="btn">
+            크롬 익스텐션 바로 가기
+          </button>
+        </a>
+      </div>
+      <hr />
+      <div class="board">
+        <h1>⌨️이효석에 밤에 대해 하고 싶은 말을 남겨주세요!</h1>
+        <h2>Please leave a message to Tetz's night!</h2>
+        <h3 class="margin-top">
+          이효석의 밤에서 하고 싶은 레크레이션이나 아이디어도 좋습니다!
+        </h3>
+        <div class="post-form">
+          <input
+            type="text"
+            id="post-content"
+            placeholder="한줄 메시지를 입력하세요"
+          />
+          <button id="post-btn" class="btn">작성</button>
+        </div>
+        <div id="posts-container"></div>
+      </div>
+    </div>
+
+    <script>
+      const attendBtn = document.getElementById('attend-btn');
+      const declineBtn = document.getElementById('decline-btn');
+      const modifyBtn = document.getElementById('modify-btn');
+      const voteButtons = document.querySelector('.button-container');
+      const postBtn = document.getElementById('post-btn');
+      const postContent = document.getElementById('post-content');
+      const postsContainer = document.getElementById('posts-container');
+
+      // UUID 생성 함수
+      const generateUUID = () => {
+        return (
+          'uuid-' +
+          Math.random().toString(36).substr(2, 6) +
+          '-' +
+          Math.random().toString(36).substr(2, 3)
+        );
+      };
+
+      // 로컬스토리지 체크
+      const checkVoteStatus = () => {
+        const hasVoted = localStorage.getItem('tetzNightVote');
+        if (hasVoted) {
+          attendBtn.style.display = 'none';
+          declineBtn.style.display = 'none';
+          modifyBtn.style.display = 'block';
+        }
+      };
+
+      // UUID 체크 및 생성
+      const checkAndGenerateUUID = () => {
+        let userId = localStorage.getItem('tetzNightUserId');
+        if (!userId) {
+          userId = generateUUID();
+          localStorage.setItem('tetzNightUserId', userId);
+        }
+        return userId;
+      };
+
+      // 초기 로드시 체크
+      checkVoteStatus();
+      checkAndGenerateUUID();
+
+      // 참여 버튼 클릭
+      attendBtn.addEventListener('click', async () => {
+        const userId = localStorage.getItem('tetzNightUserId');
+
+        try {
+          const response = await fetch('http://localhost:8080/vote', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              user: userId,
+              voteType: '참여',
+            }),
+          });
+
+          if (response.status === 200) {
+            localStorage.setItem('tetzNightVote', 'attend');
+            checkVoteStatus();
+          } else {
+            alert('투표 전송에 실패 했습니다. 죄송합니다 by tetz');
+            throw new Error('투표 전송 실패');
+          }
+        } catch (error) {
+          alert('투표 전송에 실패 했습니다. 죄송합니다 by tetz');
+          console.error('투표 전송 중 오류 발생:', error);
+        }
+      });
+
+      // 불참 버튼 클릭
+      declineBtn.addEventListener('click', async () => {
+        const userId = localStorage.getItem('tetzNightUserId');
+
+        try {
+          const response = await fetch('http://localhost:8080/vote', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              user: userId,
+              voteType: '불참',
+            }),
+          });
+
+          if (response.status === 200) {
+            localStorage.setItem('tetzNightVote', 'decline');
+            checkVoteStatus();
+          } else {
+            alert('투표 전송에 실패 했습니다. 죄송합니다 by tetz');
+            throw new Error('투표 전송 실패');
+          }
+        } catch (error) {
+          alert('투표 전송에 실패 했습니다. 죄송합니다 by tetz');
+          console.error('투표 전송 중 오류 발생:', error);
+        }
+      });
+
+      // 수정 버튼 클릭
+      modifyBtn.addEventListener('click', () => {
+        localStorage.removeItem('tetzNightVote');
+        attendBtn.style.display = 'block';
+        declineBtn.style.display = 'block';
+        modifyBtn.style.display = 'none';
+      });
+
+      // 게시글 작성
+      postBtn.addEventListener('click', async () => {
+        const userId = localStorage.getItem('tetzNightUserId');
+        const content = postContent.value;
+
+        if (!content) {
+          alert('내용을 입력해주세요!');
+          return;
+        }
+
+        try {
+          const response = await fetch('http://localhost:8080/post', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              userId,
+              content,
+            }),
+          });
+
+          if (response.status === 200) {
+            postContent.value = '';
+            loadPosts();
+          } else {
+            alert('게시글 작성에 실패했습니다.');
+          }
+        } catch (error) {
+          console.error('게시글 작성 중 오류 발생:', error);
+          alert('게시글 작성에 실패했습니다.');
+        }
+      });
+
+      // 게시글 불러오기
+      const loadPosts = async () => {
+        try {
+          const response = await fetch('http://localhost:8080/posts');
+          const posts = await response.json();
+
+          postsContainer.innerHTML = posts
+            .map(
+              (post) => `
+            <div class="post">
+              <span class="post-user">${post.userId}</span>
+              <span class="post-content">${post.content}</span>
+            </div>
+          `
+            )
+            .join('');
+        } catch (error) {
+          console.error('게시글 로딩 중 오류 발생:', error);
+        }
+      };
+
+      // 초기 게시글 로딩
+      loadPosts();
+    </script>
   </body>
 </html>
