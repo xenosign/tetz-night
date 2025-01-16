@@ -135,4 +135,31 @@ body {
     height: 100%;
     object-fit: cover; /* 이미지 비율 유지하며 컨테이너 채우기 */
   }
+
+  h1 {
+    font-size: 1.5em;
+  }
+  h2 {
+    font-size: 1.2em;
+  }
+  h3 {
+    font-size: 0.8em;
+  }
+  .post-user,
+  .post-content {
+    font-size: 16px !important;
+  }
+  #like-btn {
+    font-size: 16px !important;
+  }
+  #post-btn {
+    width: 100px;
+    padding: 10px;
+  }
+  .btn {
+    font-size: 0.9em;
+  }
+  input {
+    font-size: 0.9em;
+  }
 }
