@@ -111,6 +111,8 @@
             참여 여부 수정
           </button>
         </div>
+        <br />
+        <h1>현재 참여자 : <span id="attendCount">0</span>명</h1>
       </div>
       <hr />
       <div class="chat">
@@ -226,6 +228,7 @@
           if (response.status === 200) {
             localStorage.setItem('tetzNightVote', 'attend');
             checkVoteStatus();
+            loadVotes();
           } else {
             alert(
               '죄송 합니다. 백엔드 서버가 죽었습니다 ㅠㅠ\n빠르게 수정 하겠습니다 by tetz'
@@ -257,6 +260,7 @@
           if (response.status === 200) {
             localStorage.setItem('tetzNightVote', 'decline');
             checkVoteStatus();
+            loadVotes();
           } else {
             alert(
               '죄송 합니다. 백엔드 서버가 죽었습니다 ㅠㅠ\n빠르게 수정 하겠습니다 by tetz'
@@ -280,6 +284,19 @@
       });
 
       // 게시글 불러오기
+      const loadVotes = async () => {
+        try {
+          const response = await fetch('http://localhost:8080/vote');
+          const votes = await response.json();
+          const attendCount = document.getElementById('attendCount');
+          attendCount.textContent = votes.attend;
+        } catch (error) {
+          console.error('투표 수 로딩 중 오류 발생:', error);
+          attendCount.textContent = '서버 오류';
+        }
+      };
+
+      // 게시글 불러오기
       const loadPosts = async () => {
         try {
           const response = await fetch('http://localhost:8080/post', {
@@ -299,10 +316,8 @@
               )} | </span>
               <span class="post-content" style="font-size: 20px">${
                 post.content
-              }</span>        
-              <button id="like-btn" class="btn" onclick="likePost('${
-                post.id
-              }')" 
+              }</span>
+              <button id="like-btn" class="btn" onclick="likePost('${post.id}')"
                 style="background: ${
                   post.liked
                     ? 'linear-gradient(45deg, #ff1493, #ff69b4)'
@@ -425,6 +440,7 @@
 
       // 초기 게시글 로딩
       loadPosts();
+      loadVotes();
     </script>
   </body>
 </html>
