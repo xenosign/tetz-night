@@ -173,6 +173,11 @@
       const postBtn = document.getElementById('post-btn');
       const postContent = document.getElementById('post-content');
       const postsContainer = document.getElementById('posts-container');
+
+      // const BASE_URL = "http://localhost:8080";
+      const BASE_URL =
+        'https://port-0-tetz-night-back-m5yo5gmx92cc34bc.sel4.cloudtype.app';
+
       let userId;
 
       // UUID 생성 함수
@@ -214,7 +219,7 @@
         const userId = localStorage.getItem('tetzNightUserId');
 
         try {
-          const response = await fetch('http://localhost:8080/vote', {
+          const response = await fetch(`${BASE_URL}/vote`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -246,7 +251,7 @@
       // 불참 버튼 클릭
       declineBtn.addEventListener('click', async () => {
         try {
-          const response = await fetch('http://localhost:8080/vote', {
+          const response = await fetch(`${BASE_URL}/vote`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -286,7 +291,7 @@
       // 게시글 불러오기
       const loadVotes = async () => {
         try {
-          const response = await fetch('http://localhost:8080/vote');
+          const response = await fetch(`${BASE_URL}/vote`);
           const votes = await response.json();
           const attendCount = document.getElementById('attendCount');
           attendCount.textContent = votes.attend;
@@ -299,7 +304,7 @@
       // 게시글 불러오기
       const loadPosts = async () => {
         try {
-          const response = await fetch('http://localhost:8080/post', {
+          const response = await fetch(`${BASE_URL}/post`, {
             headers: {
               uuid: userId,
             },
@@ -346,7 +351,7 @@
         }
 
         try {
-          const response = await fetch('http://localhost:8080/post', {
+          const response = await fetch(`${BASE_URL}/post`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -384,7 +389,7 @@
           }
 
           try {
-            const response = await fetch('http://localhost:8080/post', {
+            const response = await fetch(`${BASE_URL}/post`, {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
@@ -415,7 +420,7 @@
       // 게시글 좋아요
       const likePost = async (postId) => {
         try {
-          const response = await fetch(`http://localhost:8080/${postId}/like`, {
+          const response = await fetch(`${BASE_URL}/${postId}/like`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
