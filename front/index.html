@@ -114,7 +114,7 @@
           </button>
         </div>
         <br />
-        <h1>현재 참여자 : <span id="attendCount">0</span>명</h1>
+        <h1>현재 참여자 : <span id="attendCount">0</span></h1>
       </div>
       <hr />
       <div class="chat">
@@ -290,13 +290,13 @@
         modifyBtn.style.display = 'none';
       });
 
-      // 게시글 불러오기
+      // 투표 현황 불러오기
       const loadVotes = async () => {
         try {
           const response = await fetch(`${BASE_URL}/vote`);
           const votes = await response.json();
           const attendCount = document.getElementById('attendCount');
-          attendCount.textContent = votes.attend;
+          attendCount.textContent = `${votes.attend}명`;
         } catch (error) {
           console.error('투표 수 로딩 중 오류 발생:', error);
           attendCount.textContent = '서버 오류';
