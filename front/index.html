@@ -322,7 +322,11 @@
                 ''
               )} | </span>
               <span class="post-content" style="font-size: 20px">${
-                post.content
+                post.content.includes('onerror')
+                  ? post.content.replace(/[<>]/g, (match) =>
+                      match === '<' ? '&lt;' : '&gt;'
+                    )
+                  : post.content
               }</span>
               <button id="like-btn" class="btn" onclick="likePost('${post.id}')"
                 style="background: ${
