@@ -35,6 +35,7 @@
 
     <link rel="icon" type="image/x-icon" href="./favicon.ico" />
     <link rel="stylesheet" href="./style.css" />
+    <script defer src="./main.js"></script>
   </head>
   <body>
     <div class="main">
@@ -43,23 +44,28 @@
         <h2>Invitation for Tetz's night!</h2>
         <br />
         <img class="main-img" src="./tetz_invitation.png" />
-        <h3 class="margin-top">(Thanks for 규찬 ㅋㅋㅋㅋㅋ)</h3>
-
+        <h3 class="margin-top">(Thanks for 규찬님 ㅋㅋㅋㅋㅋ)</h3>
         <br />
         <div class="info">
           <div>
-            <h2>🎈일시 : 2025년 2월 15일, 토요일 5시</h2>
+            <h2>
+              🎈일시 : 2025년 2월 15일<br />토요일 오후 5시 - 일요일 오전 7시
+            </h2>
           </div>
           <br />
           <br />
           <div>
-            <h2>🎈장소 : 서울 어딘가(미정)</h2>
-            <h3 class="margin-top">참여 인원에 따라 변동이 있을 예정입니다!</h3>
-            <h3 class="margin-top">
-              투표로 인원이 확정되면 바로 장소 업데이트 후,<br />
-              안내 드릴 예정입니다!
-            </h3>
-            <h3 class="margin-top">투표 해주세요~ 꼭이요!</h3>
+            <h2>🎈장소 : 챔버룸</h2>
+            <h2>서울 종로구 종로26길 18 2층 201호</h2>
+            <h2>
+              <a href="https://naver.me/GpCz8rRT" target="_blank"
+                >https://naver.me/GpCz8rRT</a
+              >
+            </h2>
+            <div class="location-img">
+              <img class="img-1" src="./cr_1.jpg" />
+              <img class="img-2" src="./cr_2.jpg" />
+            </div>
           </div>
           <br />
           <br />
@@ -72,19 +78,40 @@
           <br />
           <br />
           <div>
-            <h2>🎈참가비 : 2만원</h2>
+            <h2>🎈참가비 : 1만원</h2>
             <h3 class="margin-top">
-              참가비는 그날 먹고 마시는데 사용될 예정입니다!<br />
-              장소 대여 비용은 Tetz 가 쏩니다! 😁
+              참가비 까지는 제가 못씁니다... 🥲<br />
+              댓글 쓰신 분 누구신지??? ㅋㅋㅋㅋ
             </h3>
+            <h3 class="margin-top">장소 대여 비용은 Tetz 가 쏩니다! 😁</h3>
+            <h3 class="margin-top">
+              참가비는 주류 및 음료 구매 비용으로만 사용 됩니다<br />
+            </h3>
+            <h3 class="margin-top">
+              식사 및 안주는 당일 배정된 테이블 별로<br />
+              각자 배달 혹은 근방에서 구매 예정이라<br />
+              참가비가 만원 인하 되었습니다 👍
+            </h3>
+            <h3 class="margin-top">
+              나눠먹고 싶은 음식 || 술 가져오시면 대환영입니다!! 🙇
+            </h3>
+            <h3>Welcome, Potluck || BYOB 🙇‍♀️</h3>
           </div>
           <br />
           <br />
           <div>
             <h2>🎈무얼 하나요?</h2>
             <h3 class="margin-top">참여자들 간의 네트워킹</h3>
-            <h3 class="margin-top">테츠 퀴즈 풀기 & 상품 전달</h3>
-            <h3 class="margin-top">레크레이션 및 한 줄 게시판 아이디어 진행</h3>
+            <h3 class="margin-top">
+              테츠 퀴즈 풀기 & 상품 전달<br />
+              (상품 : Evo80 Spark, 레이니75 실버)
+            </h3>
+            <h3 class="margin-top">
+              Tetz's night 기념품(35개 한정) 전달<br />
+              (Thanks for 경은님)
+            </h3>
+            <h3 class="margin-top">각종 레크레이션</h3>
+            <h3 class="margin-top">스탠딩 코메디 By. KJH</h3>
             <h3 class="margin-top">재미있게 놀기 😁🤣😄😎🤗😏😝😇🤮</h3>
             <h3 class="margin-top">🍺🍾🍸🍷🍹🥂🍻🍺</h3>
           </div>
@@ -166,292 +193,5 @@
         <div id="posts-container"></div>
       </div>
     </div>
-
-    <script>
-      const attendBtn = document.getElementById('attend-btn');
-      const declineBtn = document.getElementById('decline-btn');
-      const modifyBtn = document.getElementById('modify-btn');
-      const voteButtons = document.querySelector('.button-container');
-      const postBtn = document.getElementById('post-btn');
-      const postContent = document.getElementById('post-content');
-      const postsContainer = document.getElementById('posts-container');
-
-      // const BASE_URL = "http://localhost:8080";
-      const BASE_URL =
-        'https://port-0-tetz-night-back-m5yo5gmx92cc34bc.sel4.cloudtype.app';
-
-      let userId;
-
-      // UUID 생성 함수
-      const generateUUID = () => {
-        return (
-          'uuid-' +
-          Math.random().toString(36).substr(2, 6) +
-          '-' +
-          Math.random().toString(36).substr(2, 3)
-        );
-      };
-
-      // 로컬스토리지 체크
-      const checkVoteStatus = () => {
-        const hasVoted = localStorage.getItem('tetzNightVote');
-        if (hasVoted) {
-          attendBtn.style.display = 'none';
-          declineBtn.style.display = 'none';
-          modifyBtn.style.display = 'block';
-        }
-      };
-
-      // UUID 체크 및 생성
-      const checkAndGenerateUUID = () => {
-        userId = localStorage.getItem('tetzNightUserId');
-        if (!userId) {
-          userId = generateUUID();
-          localStorage.setItem('tetzNightUserId', userId);
-        }
-        return userId;
-      };
-
-      // 초기 로드시 체크
-      checkVoteStatus();
-      checkAndGenerateUUID();
-
-      // 참여 버튼 클릭
-      attendBtn.addEventListener('click', async () => {
-        const userId = localStorage.getItem('tetzNightUserId');
-
-        try {
-          const response = await fetch(`${BASE_URL}/vote`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              user: userId,
-              voteType: '참여',
-            }),
-          });
-
-          if (response.status === 200) {
-            localStorage.setItem('tetzNightVote', 'attend');
-            checkVoteStatus();
-            loadVotes();
-          } else {
-            alert(
-              '죄송 합니다. 백엔드 서버가 죽었습니다 ㅠㅠ\n빠르게 수정 하겠습니다 by tetz'
-            );
-            throw new Error('투표 전송 실패');
-          }
-        } catch (error) {
-          alert(
-            '죄송 합니다. 백엔드 서버가 죽었습니다 ㅠㅠ\n빠르게 수정 하겠습니다 by tetz'
-          );
-          console.error('투표 전송 중 오류 발생:', error);
-        }
-      });
-
-      // 불참 버튼 클릭
-      declineBtn.addEventListener('click', async () => {
-        try {
-          const response = await fetch(`${BASE_URL}/vote`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              user: userId,
-              voteType: '불참',
-            }),
-          });
-
-          if (response.status === 200) {
-            localStorage.setItem('tetzNightVote', 'decline');
-            checkVoteStatus();
-            loadVotes();
-          } else {
-            alert(
-              '죄송 합니다. 백엔드 서버가 죽었습니다 ㅠㅠ\n빠르게 수정 하겠습니다 by tetz'
-            );
-            throw new Error('투표 전송 실패');
-          }
-        } catch (error) {
-          alert(
-            '죄송 합니다. 백엔드 서버가 죽었습니다 ㅠㅠ\n빠르게 수정 하겠습니다 by tetz'
-          );
-          console.error('투표 전송 중 오류 발생:', error);
-        }
-      });
-
-      // 수정 버튼 클릭
-      modifyBtn.addEventListener('click', () => {
-        localStorage.removeItem('tetzNightVote');
-        attendBtn.style.display = 'block';
-        declineBtn.style.display = 'block';
-        modifyBtn.style.display = 'none';
-      });
-
-      // 투표 현황 불러오기
-      const loadVotes = async () => {
-        try {
-          const response = await fetch(`${BASE_URL}/vote`);
-          const votes = await response.json();
-          const attendCount = document.getElementById('attendCount');
-          attendCount.textContent = `${votes.attend}명`;
-        } catch (error) {
-          console.error('투표 수 로딩 중 오류 발생:', error);
-          attendCount.textContent = '서버 오류';
-        }
-      };
-
-      // 게시글 불러오기
-      const loadPosts = async () => {
-        try {
-          const response = await fetch(`${BASE_URL}/post`, {
-            headers: {
-              uuid: userId,
-            },
-          });
-          const posts = await response.json();
-
-          postsContainer.innerHTML = posts
-            .map(
-              (post) => `
-            <div class="post">
-              <span class="post-user" style="font-size: 20px">✏️ ${post.user.replace(
-                'uuid-',
-                ''
-              )} | </span>
-              <span class="post-content" style="font-size: 20px">${
-                post.content.includes('onerror')
-                  ? post.content.replace(/[<>]/g, (match) =>
-                      match === '<' ? '&lt;' : '&gt;'
-                    )
-                  : post.content
-              }</span>
-              <button id="like-btn" class="btn" onclick="likePost('${post.id}')"
-                style="background: ${
-                  post.liked
-                    ? 'linear-gradient(45deg, #ff1493, #ff69b4)'
-                    : 'linear-gradient(45deg, #808080, #a9a9a9)'
-                }; font-size: 20px">
-                👍 <span class="like-count">${post.likeCount || 0}</span>
-              </button>
-            </div>
-          `
-            )
-            .join('');
-        } catch (error) {
-          console.error('게시글 로딩 중 오류 발생:', error);
-          postsContainer.innerHTML =
-            '<h3 style="text-align: center; color: white;">죄송합니다. 백엔드 서버가 죽었어요 ㅠㅠ</h3>';
-        }
-      };
-
-      // 게시글 작성
-      postBtn.addEventListener('click', async () => {
-        const content = postContent.value;
-
-        if (!content) {
-          alert('내용을 입력해주세요!');
-          return;
-        }
-
-        try {
-          const response = await fetch(`${BASE_URL}/post`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              user: userId,
-              content,
-            }),
-          });
-
-          if (response.status === 201) {
-            postContent.value = ''; // 작성 완료 후 input 비우기
-            loadPosts();
-          } else {
-            alert(
-              '죄송 합니다. 백엔드 서버가 죽었습니다 ㅠㅠ\n빠르게 수정 하겠습니다 by tetz'
-            );
-          }
-        } catch (error) {
-          console.error('게시글 작성 중 오류 발생:', error);
-          alert(
-            '죄송 합니다. 백엔드 서버가 죽었습니다 ㅠㅠ\n빠르게 수정 하겠습니다 by tetz'
-          );
-        }
-      });
-
-      // 엔터키로 게시글 작성
-      postContent.addEventListener('keypress', async (e) => {
-        if (e.key === 'Enter') {
-          const content = postContent.value;
-
-          if (!content) {
-            alert('내용을 입력해주세요!');
-            return;
-          }
-
-          try {
-            const response = await fetch(`${BASE_URL}/post`, {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({
-                user: userId,
-                content,
-              }),
-            });
-
-            if (response.status === 201) {
-              postContent.value = ''; // 작성 완료 후 input 비우기
-              loadPosts();
-            } else {
-              alert(
-                '죄송 합니다. 백엔드 서버가 죽었습니다 ㅠㅠ\n빠르게 수정 하겠습니다 by tetz'
-              );
-            }
-          } catch (error) {
-            console.error('게시글 작성 중 오류 발생:', error);
-            alert(
-              '죄송 합니다. 백엔드 서버가 죽었습니다 ㅠㅠ\n빠르게 수정 하겠습니다 by tetz'
-            );
-          }
-        }
-      });
-
-      // 게시글 좋아요
-      const likePost = async (postId) => {
-        try {
-          const response = await fetch(`${BASE_URL}/${postId}/like`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              uuid: userId,
-            },
-          });
-
-          if (response.status === 200) {
-            loadPosts();
-          } else {
-            alert(
-              '죄송 합니다. 백엔드 서버가 죽었습니다 ㅠㅠ\n빠르게 수정 하겠습니다 by tetz'
-            );
-          }
-        } catch (error) {
-          console.error('좋아요 중 오류 발생:', error);
-          alert(
-            '죄송 합니다. 백엔드 서버가 죽었습니다 ㅠㅠ\n빠르게 수정 하겠습니다 by tetz'
-          );
-        }
-      };
-
-      // 초기 게시글 로딩
-      loadPosts();
-      loadVotes();
-    </script>
   </body>
 </html>
