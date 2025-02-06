@@ -199,7 +199,7 @@ postBtn.addEventListener('click', async () => {
     });
 
     if (response.status === 201) {
-      postContent.value = ''; // 작성 완료 후 input 비우기
+      postContent.value = '';
       loadPosts();
     } else {
       alert(
@@ -237,7 +237,7 @@ postContent.addEventListener('keypress', async (e) => {
       });
 
       if (response.status === 201) {
-        postContent.value = ''; // 작성 완료 후 input 비우기
+        postContent.value = '';
         loadPosts();
       } else {
         alert(
@@ -279,6 +279,6 @@ const likePost = async (postId) => {
   }
 };
 
-// 초기 게시글 로딩
+// 초기 로딩
 loadPosts();
 loadVotes();
