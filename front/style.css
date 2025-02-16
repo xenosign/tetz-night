@@ -40,6 +40,30 @@ body {
   width: 36%;
 }
 
+.location-img .tetz-img-1 {
+  width: 35%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.location-img .tetz-img-2 {
+  width: 63%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.location-img .tetz-img-3 {
+  width: 50%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.location-img .tetz-img-4 {
+  width: 50%;
+  height: 100%;
+  object-fit: contain;
+}
+
 .button-container {
   display: flex;
   gap: 60px;
