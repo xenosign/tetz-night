@@ -53,12 +53,24 @@ body {
 }
 
 .location-img .tetz-img-3 {
-  width: 50%;
+  width: 49%;
   height: 100%;
   object-fit: contain;
 }
 
 .location-img .tetz-img-4 {
+  width: 49%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.location-img .tetz-img-5 {
+  width: 50%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.location-img .tetz-img-6 {
   width: 50%;
   height: 100%;
   object-fit: contain;
